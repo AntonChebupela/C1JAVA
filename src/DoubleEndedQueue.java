@@ -1,29 +1,27 @@
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class DoubleEndedQueue<T> {
-    private Node<T> front; // Голова очереди
-    private Node<T> rear;  // Хвост очереди
+public class DoubleEndedQueue<T> implements Iterable<T> {
+    private Node<T> front;
+    private Node<T> rear;
     private int size;
 
-    // Внутренний класс для представления элемента очереди
     private static class Node<T> {
-        T data;
-        Node<T> next;
-        Node<T> prev;
+        private T data;
+        private Node<T> next;
+        private Node<T> prev;
 
         public Node(T data) {
             this.data = data;
         }
     }
 
-    // Конструктор для создания пустой очереди
     public DoubleEndedQueue() {
         front = null;
         rear = null;
         size = 0;
     }
 
-    // Добавить элемент в начало очереди
     public void addFront(T item) {
         Node<T> newNode = new Node<>(item);
         if (isEmpty()) {
@@ -37,6 +35,7 @@ public class DoubleEndedQueue<T> {
         size++;
     }
 
+
     public void addRear(T item) {
         Node<T> newNode = new Node<>(item);
         if (isEmpty()) {
@@ -49,7 +48,8 @@ public class DoubleEndedQueue<T> {
         }
         size++;
     }
-    // Удалить элемент с начала очереди
+
+
     public T removeFront() {
         if (isEmpty()) {
             throw new NoSuchElementException("Очередь пуста");
@@ -68,7 +68,7 @@ public class DoubleEndedQueue<T> {
         return data;
     }
 
-    // Удалить элемент с конца очереди
+
     public T removeRear() {
         if (isEmpty()) {
             throw new NoSuchElementException("Очередь пуста");
@@ -88,7 +88,30 @@ public class DoubleEndedQueue<T> {
     }
 
 
-    // Добавить элемент в произвольное место очереди по индексу
+    private class DoubleEndedIterator implements Iterator<T> {
+        private Node<T> current = front;
+
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+
+        @Override
+        public T next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            T data = current.data;
+            current = current.next;
+            return data;
+        }
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new DoubleEndedIterator();
+    }
+
     public void addAtIndex(int index, T item) {
         if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException("Недопустимый индекс");
@@ -111,7 +134,7 @@ public class DoubleEndedQueue<T> {
         }
     }
 
-    // Найти индекс первого вхождения элемента в очереди (с начала)
+
     public int find(T item) {
         Node<T> current = front;
         int index = 0;
@@ -122,10 +145,10 @@ public class DoubleEndedQueue<T> {
             current = current.next;
             index++;
         }
-        return -1; // Элемент не найден
+        return -1;
     }
 
-    // Обновить элемент в очереди по индексу
+
     public void updateAtIndex(int index, T newItem) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Недопустимый индекс");
@@ -137,7 +160,7 @@ public class DoubleEndedQueue<T> {
         current.data = newItem;
     }
 
-    // Получить первый элемент очереди
+
     public T getFront() {
         if (isEmpty()) {
             throw new NoSuchElementException("Очередь пуста");
@@ -145,7 +168,7 @@ public class DoubleEndedQueue<T> {
         return front.data;
     }
 
-    // Получить последний элемент очереди
+
     public T getRear() {
         if (isEmpty()) {
             throw new NoSuchElementException("Очередь пуста");
@@ -153,40 +176,29 @@ public class DoubleEndedQueue<T> {
         return rear.data;
     }
 
-    // Очистить очередь
+
     public void clear() {
         front = null;
         rear = null;
         size = 0;
     }
 
-    // Проверить, содержит ли очередь указанный элемент
+
     public boolean contains(T item) {
         return find(item) != -1;
     }
 
 
-    // Проверить, пуста ли очередь
     public boolean isEmpty() {
         return size == 0;
     }
 
-    // Получить размер очереди
+
     public int size() {
         return size;
     }
 
-    // Вывести содержимое очереди
-    public void printQueue() {
-        Node<T> current = front;
-        while (current != null) {
-            System.out.print(current.data + " ");
-            current = current.next;
-        }
-        System.out.println();
-    }
 
-    // Получить элемент по индексу
     public T get(int index) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Недопустимый индекс");
@@ -219,5 +231,4 @@ public class DoubleEndedQueue<T> {
             size--;
         }
     }
-
 }

@@ -2,18 +2,17 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        QueueManager queueManager = new QueueManager();
-        LibraryManager libraryManager = new LibraryManager();
-
-        System.out.println("Добро пожаловать в программу!");
-
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
 
+        QueueManager queueManager = new QueueManager();
+        TaskManager taskManager = new TaskManager(new DoubleEndedQueue<>());
+
         while (running) {
+            System.out.println("Добро пожаловать в программу!");
             System.out.println("Выберите действие:");
             System.out.println("1. Управление очередью");
-            System.out.println("2. TaskLibrary (управление библиотекой книг)");
+            System.out.println("2. Управление задачами");
             System.out.println("3. Выйти из программы");
             System.out.print("Введите номер действия (1-3): ");
 
@@ -25,7 +24,7 @@ public class Main {
                     queueManager.start();
                     break;
                 case 2:
-                    libraryManager.manageLibrary(queueManager.getDeque());
+                    taskManager.manageTasks(scanner);
                     break;
                 case 3:
                     running = false;

@@ -2,8 +2,8 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class QueueManager {
-    private DoubleEndedQueue<Object> deque;
-    private Scanner scanner;
+    private final DoubleEndedQueue<Object> deque;
+    private final Scanner scanner;
 
     public QueueManager() {
         deque = new DoubleEndedQueue<>();
@@ -13,7 +13,6 @@ public class QueueManager {
         return deque;
     }
 
-    // Метод для управления очередью
     public void start() {
         System.out.println("Добро пожаловать в программу управления очередью.");
         boolean running = true;
@@ -90,7 +89,7 @@ public class QueueManager {
                     break;
 
                 case 4:
-                    
+
                     System.out.print("Введите элемент для удаления с конца очереди (или 'Закончить' для завершения удаления): ");
                     while (true) {
                         String input = scanner.next();
@@ -129,8 +128,6 @@ public class QueueManager {
                     System.out.print("Введите новое значение: ");
                     if (scanner.hasNextInt()) {
                         int newItem = scanner.nextInt();
-                        // Вызываем метод updateAtIndex() из DoubleEndedQueue
-                        // для обновления элемента по индексу
                         try {
                             deque.updateAtIndex(indexToUpdate, newItem);
                             System.out.println("Элемент по индексу " + indexToUpdate + " обновлен.");
@@ -145,8 +142,6 @@ public class QueueManager {
                     System.out.print("Введите элемент для поиска индекса: ");
                     if (scanner.hasNextInt()) {
                         int itemToFind = scanner.nextInt();
-                        // Вызываем метод find() из DoubleEndedQueue
-                        // для поиска индекса элемента и выводим результат
                         int foundIndex = deque.find(itemToFind);
                         if (foundIndex != -1) {
                             System.out.println("Индекс элемента " + itemToFind + ": " + foundIndex);
@@ -158,8 +153,6 @@ public class QueueManager {
                     }
                     break;
                 case 9:
-                    // Вызываем метод getFront() из DoubleEndedQueue
-                    // для получения первого элемента очереди и выводим результат
                     Object frontItem = deque.getFront();
                     if (frontItem != null) {
                         System.out.println("Первый элемент очереди: " + frontItem);
@@ -168,8 +161,6 @@ public class QueueManager {
                     }
                     break;
                 case 10:
-                    // Вызываем метод getRear() из DoubleEndedQueue
-                    // для получения последнего элемента очереди и выводим результат
                     Object rearItem = deque.getRear();
                     if (rearItem != null) {
                         System.out.println("Последний элемент очереди: " + rearItem);
@@ -179,7 +170,10 @@ public class QueueManager {
                     break;
                 case 11:
                     System.out.println("Содержимое очереди:");
-                    deque.printQueue();
+                    for (Object item : deque) {
+                        System.out.print(item + " ");
+                    }
+                    System.out.println();
                     break;
                 case 12:
                     deque.clear();
